@@ -5,6 +5,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { fileFilter, fileNamer } from 'src/files/helpers';
 import { diskStorage } from 'multer';
 import { FilesService } from 'src/files/files.service';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -22,7 +23,7 @@ export class UsersController {
     })
   }))
   async createUser(
-    @Body() createUserDto: any, 
+    @Body() createUserDto: CreateUserDto, 
     @UploadedFile() avatar?: Express.Multer.File 
   ) {
     let avatarUrl: string | undefined;

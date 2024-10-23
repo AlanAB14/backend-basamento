@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, Entity } from "typeorm";
+import { RolesEmployee } from "src/roles_employee/entities/roles_employee.entity";
+import { User } from "src/users/entities/user.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity()
 export class Employee {
@@ -23,12 +25,14 @@ export class Employee {
     @Column({ type: 'text', nullable: true })
     avatar?: string;
 
-    
     @CreateDateColumn({ type: 'timestamp' })
     created_at: Date;
     
-    role_id: number;
-    
-    updated_by: number;
+    @ManyToOne(() => RolesEmployee, (role) => role.employees)
+    @JoinColumn({ name: 'role_id' })
+    role_id: RolesEmployee;
 
+    @ManyToOne(() => User)
+    @JoinColumn({ name: 'updated_by' })
+    updated_by: User;
 }

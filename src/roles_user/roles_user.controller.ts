@@ -3,7 +3,7 @@ import { RolesUserService } from './roles_user.service';
 import { CreateRolesUserDto } from './dto/create-roles_user.dto';
 import { UpdateRolesUserDto } from './dto/update-roles_user.dto';
 
-@Controller('roles-user')
+@Controller('rolesUser')
 export class RolesUserController {
   constructor(private readonly rolesUserService: RolesUserService) {}
 

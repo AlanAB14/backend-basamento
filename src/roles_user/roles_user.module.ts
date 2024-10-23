@@ -10,5 +10,6 @@ import { RolesUser } from './entities/roles_user.entity';
   ],
   controllers: [RolesUserController],
   providers: [RolesUserService],
+  exports: [TypeOrmModule]
 })
 export class RolesUserModule {}

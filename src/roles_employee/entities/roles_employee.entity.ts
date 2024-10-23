@@ -1,4 +1,6 @@
-import { Column, Entity } from "typeorm";
+import { Employee } from "src/employees/entities/employee.entity";
+import { User } from "src/users/entities/user.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity()
 export class RolesEmployee {
@@ -11,5 +13,10 @@ export class RolesEmployee {
     @Column({ nullable: false })
     salary_per_hour: number;
 
-    updated_by: number;
+    @OneToMany(() => Employee, (employee) => employee.role_id)
+    employees: Employee[];
+
+    @ManyToOne(() => User)
+    @JoinColumn({ name: 'updated_by' })
+    updated_by: User;
 }

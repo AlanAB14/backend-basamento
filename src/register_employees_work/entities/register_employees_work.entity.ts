@@ -1,12 +1,19 @@
-import { Column, CreateDateColumn, Entity } from "typeorm";
+import { Construction } from "src/constructions/entities/construction.entity";
+import { Employee } from "src/employees/entities/employee.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity()
 export class RegisterEmployeesWork {
     @Column({ primary: true, generated: true })
     id: number;
 
-    employee_id: number;
-    construction_id: number;
+    @ManyToOne(() => Employee)
+    @JoinColumn({ name: 'employee_id' })
+    employee: Employee;
+
+    @ManyToOne(() => Construction)
+    @JoinColumn({ name: 'construction_id' })
+    construction: Construction;
 
     @CreateDateColumn({ type: 'timestamp', nullable: false })
     date_work: Date;
