@@ -31,7 +31,7 @@ export class UsersService {
 
     if (!role) {
       throw new BadRequestException('Role not found');
-  }
+    }
 
     return await this.userRepository.save({
       ...createUserDto,
@@ -40,23 +40,42 @@ export class UsersService {
     });
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return await this.userRepository.find();
   }
 
   findOneByEmail(email: string) {
     return this.userRepository.findOneBy({ email })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    const user = await this.userRepository.findOneBy({ id });
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+    if (updateUserDto.role_id) {
+      const role = await this.rolesUserRepository.findOne({ where: { id: updateUserDto.role_id } });
+      if (!role) {
+        throw new BadRequestException('Role not found');
+      }
+      user.role_id = role; 
+    }
+
+    Object.assign(user, updateUserDto);
+    return await this.userRepository.save(user);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    const user = await this.findOne(id);
+    return await this.userRepository.softDelete({ id });
   }
 }
